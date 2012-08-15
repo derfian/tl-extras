@@ -24,7 +24,7 @@ sub main()
         # lets daemonize ourselves
         open STDOUT, '>',$ENV{HOME}.'/tl-connect-action.log'
            or die "Could not open logger output: $!\n";
-        open STDERR, '>','&STDOUT'
+        open STDERR, '>&STDOUT'
            or die "Could redirect STDERR:$!\n";
         $SIG{CHLD} = 'IGNORE';
         exit if fork;
@@ -55,7 +55,7 @@ __END__
 
 =head1 NAME
 
-tl-connect-action - as a tl is session connects to a terminal
+tl-connect-action - run a script when a tl session connects to a terminal
 
 =head1 SYNOPSIS
 
@@ -70,11 +70,14 @@ B<tl-connect-action> [I<options>...]
      
 =head1 DESCRIPTION
 
-Run a script as a ThinLinc session is connected
-to a terminal. In C<noaction> and C<verbose> mode, the program will run in 
-foreground, otherwhise it will run as a daemon.
-The script polls the output of C<tl-session-param /client_ip> to determine
-changes in the client ip addresse.
+Run a script when a ThinLinc session is connected to a terminal.
+In the script you can use the $TL_CLIENT_IP environment variable to
+determine the ip address of your thin client and take appropriate action.
+
+C<--noaction> and C<--verbose> mode, the program will run in foreground,
+otherwhise it will run as a daemon. The script polls the output of
+C<tl-session-param /client_ip> to determine changes in the client ip
+addresse.
 
 =head1 BUGS
 
