@@ -35,7 +35,7 @@ sub main()
 
     while (1){
         sleep $opt{interval};
-        my $ip = (`/opt/thinlinc/bin/tl-session-param /client_ip` =~ /(\S+)/);
+        my ($ip) = `/opt/thinlinc/bin/tl-session-param /client_ip` =~ /(\S+)/;
         next if $ip ~~ $lastIp;
         print STDERR "## found new ip: $ip\n" if $opt{verbose};
         $lastIp = $ip;
